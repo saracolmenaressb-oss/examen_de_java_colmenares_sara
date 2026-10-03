@@ -23,6 +23,8 @@ public class Prestamos {
     private EstadoPrestamo estado;
     private Clientes clientes;
     private Empleado empledos;
+    private int numeroCuotas;
+    private double valorCuota;
     
     //Constructor
     public Prestamos(int idprestamo, double monto, double tasaInteres, LocalDate fechaIinicio, LocalDate fechaVencimiento, double cuotaMensual, double montoTotal, double saldoPendiente, EstadoPrestamo estado, Clientes clientes, Empleado empledos) {
@@ -39,10 +41,19 @@ public class Prestamos {
         this.empledos = empledos;
     }
     // metodo de calcular monto total
-    
+    public double calcularMontoTotal(){
+        double valorInteres = monto * (tasaInteres/100);
+        montoTotal = (valorCuota*numeroCuotas)+ valorInteres;
+        return montoTotal;
+    }
     //calcular cuota mensual
-    //cambiar estdo
-    
+    public double calcularCuotaMensual(int numCuotas){
+        return montoTotal / numCuotas;
+    }
+    //cambiar estado
+    public void cambiarEstado(EstadoPrestamo estado) {
+        this.estado = estado;
+    }
     //getters
     public int getIdprestamo() {
         return idprestamo;

@@ -12,7 +12,7 @@ public class Clientes extends Persona {
     
     private String telefono;
     //constructor
-    public Clientes(int idpersona, String nombre, String documento, String correo) {
+    public Clientes(int idpersona, String nombre, String documento, String correo, String telefono) {
         super(idpersona, nombre, documento, correo);
         this.telefono = telefono;
     }

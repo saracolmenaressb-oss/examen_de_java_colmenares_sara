@@ -13,7 +13,7 @@ public class Empleado extends Persona{
     private String rol;
     private double salario;
 
-    public Empleado(int idpersona, String nombre, String documento, String correo) {
+    public Empleado(int idpersona, String nombre, String documento, String correo, String rol, double salario) {
         super(idpersona, nombre, documento, correo);
         this.rol = rol;
         this.salario = salario;

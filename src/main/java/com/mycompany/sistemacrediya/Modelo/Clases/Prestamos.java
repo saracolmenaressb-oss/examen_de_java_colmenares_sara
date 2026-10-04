@@ -19,13 +19,17 @@ public class Prestamos {
     private double cuotaMensual;
     private double montoTotal;
     private double saldoPendiente;
+    private int numeroCuotas;
+    private double valorCuota;
     //Referencias
     private EstadoPrestamo estado;
     private Clientes clientes;
-    private Empleado empledos;
-    private int numeroCuotas;
-    private double valorCuota;
+    private Empleado empleados;
     
+    //constructor vacio
+    public Prestamos() {    
+    }
+
     //Constructor
     public Prestamos(int idprestamo, double monto, double tasaInteres, LocalDate fechaIinicio, LocalDate fechaVencimiento, double cuotaMensual, double montoTotal, double saldoPendiente, EstadoPrestamo estado, Clientes clientes, Empleado empledos) {
         this.idprestamo = idprestamo;
@@ -38,7 +42,7 @@ public class Prestamos {
         this.saldoPendiente = saldoPendiente;
         this.estado = estado;
         this.clientes = clientes;
-        this.empledos = empledos;
+        this.empleados = empledos;
     }
     // metodo de calcular monto total
     public double calcularMontoTotal(){
@@ -91,12 +95,17 @@ public class Prestamos {
         return estado;
     }
 
+    public int getNumeroCuotas() {
+        return numeroCuotas;
+    }
+    
+
     public Clientes getClientes() {
         return clientes;
     }
 
-    public Empleado getEmpledos() {
-        return empledos;
+    public Empleado getEmpleados() {
+        return empleados;
     }
     //setters
     public void setIdprestamo(int idprestamo) {
@@ -139,8 +148,17 @@ public class Prestamos {
         this.clientes = clientes;
     }
 
-    public void setEmpledos(Empleado empledos) {
-        this.empledos = empledos;
+    public void setNumeroCuotas(int numeroCuotas) {
+        this.numeroCuotas = numeroCuotas;
+    }
+
+    public void setValorCuota(double valorCuota) {
+        this.valorCuota = valorCuota;
+    }
+    
+
+    public void setEmpleados(Empleado empleados) {
+        this.empleados = empleados;
     }
     
     

@@ -50,7 +50,27 @@ public class ClientesDao implements ClienteRepository{
 
     @Override
     public Clientes consultarPorId(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Operaciones.setConnection(ConexionDB.MysConnection());
+        String sentencia = "SELECT * FROM clientes WHERE id= ?;";
+        Clientes clientes = null;
+        try(PreparedStatement ps = Operaciones.getConnection().prepareStatement(sentencia);){
+            ps.setInt(1, id);
+            try(ResultSet rs =  Operaciones.consultar_BD(ps)){
+                if (rs != null && rs.next()) {
+                    int idc = rs.getInt("id");
+                    String nombre = rs.getString("nombre");
+                    String documento = rs.getString("documento");
+                    String correo = rs.getString("correo");
+                    String telefono = rs.getString("telefono");
+               
+                    clientes = new Clientes(idc, nombre, documento, correo, telefono);
+                }
+                
+            }
+        }finally{
+            Operaciones.cerrarConexion();
+        }
+        return clientes;
     }
 
     @Override
@@ -77,7 +97,28 @@ public class ClientesDao implements ClienteRepository{
 
     @Override
     public boolean actualizar(Clientes cliente) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Operaciones.setConnection(ConexionDB.MysConnection());
+        String sentencia = "UPDATE FROM clientes WHERE id= ?;";
+        try(PreparedStatement ps = Operaciones.getConnection().prepareStatement(sentencia)){
+            ps.setInt(1, cliente.getIdpersona());
+            ps.setString(2, cliente.getNombre());
+            ps.setString(3, cliente.getDocumento());
+            ps.setString(4, cliente.getCorreo());
+            ps.setString(5, cliente.getTelefono());  
+            int filasAfectadas = ps.executeUpdate();
+            
+            if (filasAfectadas > 0) {
+                Operaciones.commitBD();
+                System.out.println("Se ha actualizado correctamente");
+                return true;
+            } else {
+                Operaciones.rollbackBD();
+                System.err.println("⚠️ Error: No se pudo actualizar, ID no encontrado");
+                return false;
+            }
+        }finally{
+            Operaciones.cerrarConexion();
+        }
     }
 
     @Override

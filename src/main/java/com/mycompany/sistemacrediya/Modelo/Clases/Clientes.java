@@ -16,7 +16,16 @@ public class Clientes extends Persona {
         super(idpersona, nombre, documento, correo);
         this.telefono = telefono;
     }
-   
+
+    public Clientes(String telefono, String nombre, String documento, String correo) {
+        super(nombre, documento, correo);
+        this.telefono = telefono;
+    }
+
+    public Clientes() {
+    }
+    
+    
     //getters
     public String getTelefono() {
         return telefono;

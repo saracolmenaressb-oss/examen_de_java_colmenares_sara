@@ -27,6 +27,10 @@ public abstract class Persona {
         this.documento = documento;
         this.correo = correo;
     }
+    //Constructor vacio
+
+    public Persona() {
+    }
     
     //getters
     public int getIdpersona() {
@@ -48,6 +52,18 @@ public abstract class Persona {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public void setIdpersona(int idpersona) {
+        this.idpersona = idpersona;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
     
 }

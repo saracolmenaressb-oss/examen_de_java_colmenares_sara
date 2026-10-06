@@ -8,9 +8,11 @@ import com.mycompany.sistemacrediya.Conexion.ConexionDB;
 import com.mycompany.sistemacrediya.Conexion.Operaciones;
 import com.mycompany.sistemacrediya.Modelo.Clases.Empleado;
 import com.mycompany.sistemacrediya.Modelo.Persistencia.EmpleadoRepository;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,32 +24,42 @@ public class EmpleadosDao implements EmpleadoRepository {
 
     @Override
     public boolean registrarEmpleado(Empleado empleado) throws SQLException {
-        Operaciones.setConnection(ConexionDB.MysConnection());
-        String sentencia = "INSERT INTO empleados (id, nombre, documento, correo, rol, salario) VALUES (?, ?, ?, ?, ?, ?);";
-        
-        try (PreparedStatement ps = Operaciones.getConnection().prepareStatement(sentencia)) {
-            ps.setInt(1, empleado.getIdpersona());
-            ps.setString(2, empleado.getNombre());
-            ps.setString(3, empleado.getDocumento());
-            ps.setString(4, empleado.getCorreo());
-            ps.setString(5, empleado.getRol());
-            ps.setDouble(6, empleado.getSalario());
-            
-            int filas = Operaciones.insertar_actualizar_borrar_BD(ps);
-            
-            Operaciones.setAutoCommitBD(false);
-            if (filas > 0) {
-                Operaciones.commitBD();
-                System.out.println("Se ha registrado correctamente");
-                return true;
-            } else {
-                Operaciones.rollbackBD();
-                System.err.println("⚠️ Ha ocurrido un error al registrar");
+        String sentencia = """
+        INSERT INTO empleados (nombre, documento, correo, rol, salario)
+        VALUES (?, ?, ?, ?, ?)
+        """;
+    try (Connection conexion = ConexionDB.MysConnection()) {
+        if (conexion == null) {
+            throw new SQLException("No se pudo establecer la conexión con MySQL.");
+        }
+        try (PreparedStatement ps = conexion.prepareStatement(
+                sentencia, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, empleado.getNombre());
+            ps.setString(2, empleado.getDocumento());
+            ps.setString(3, empleado.getCorreo());
+            ps.setString(4, empleado.getRol());
+            ps.setDouble(5, empleado.getSalario());
+
+            int filas = ps.executeUpdate();
+
+            if (filas != 1) {
                 return false;
             }
-        } finally {
-            Operaciones.cerrarConexion();
+
+            try (ResultSet resultado = ps.getGeneratedKeys()) {
+
+                if (resultado.next()) {
+                    int idGenerado = resultado.getInt(1);
+                    empleado.setIdpersona(idGenerado);
+                    return true;
+                }
+
+                throw new SQLException(
+                    "El empleado se insertó, pero no se pudo recuperar su ID."
+                );
+            }
         }
+    }
     }
 
     @Override

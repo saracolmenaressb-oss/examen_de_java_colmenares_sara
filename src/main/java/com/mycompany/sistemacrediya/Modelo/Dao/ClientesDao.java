@@ -22,30 +22,36 @@ public class ClientesDao implements ClienteRepository{
 
     @Override
     public boolean registrarCliente(Clientes cliente) throws SQLException {
-        Operaciones.setConnection(ConexionDB.MysConnection());
-        String sentencia = "INSERT INTO clientes (id, nombre, documento, correo, telefono) VALUES(?, ?, ?, ?, ?);";
-        try (PreparedStatement ps = Operaciones.getConnection().prepareStatement(sentencia)){
-            ps.setInt(1, cliente.getIdpersona());
-            ps.setString(2, cliente.getNombre());
-            ps.setString(3, cliente.getDocumento());
-            ps.setString(4, cliente.getCorreo());
-            ps.setString(5, cliente.getTelefono());
+         String sentencia = """
+            INSERT INTO clientes (nombre, documento, correo, telefono)
+            VALUES (?, ?, ?, ?)
+            """;
+    Operaciones.setConnection(ConexionDB.MysConnection());
+    try {
+        Operaciones.setAutoCommitBD(false);
+        try (PreparedStatement ps =
+            Operaciones.getConnection().prepareStatement(sentencia)) {
+            ps.setString(1, cliente.getNombre());
+            ps.setString(2, cliente.getDocumento());
+            ps.setString(3, cliente.getCorreo());
+            ps.setString(4, cliente.getTelefono());
             int filas = Operaciones.insertar_actualizar_borrar_BD(ps);
-            Operaciones.setAutoCommitBD(false);
-            if(filas > 0){
+            if (filas > 0) {
                 Operaciones.commitBD();
-                Operaciones.cerrarConexion();
-                System.out.println("Cliente registrado correctamente");
+                System.out.println("Cliente registrado correctamente.");
                 return true;
-            }else{
+            } else {
                 Operaciones.rollbackBD();
-                System.err.println("⚠️ Ha ocurrido un error al registrar");
+                System.err.println("No se pudo registrar el cliente.");
                 return false;
             }
-        }finally{
-            Operaciones.cerrarConexion();
-            return false;
         }
+    } catch (SQLException e) {
+        Operaciones.rollbackBD();
+        throw e; 
+    } finally {
+        Operaciones.cerrarConexion();
+    }
     }
 
     @Override
@@ -75,24 +81,36 @@ public class ClientesDao implements ClienteRepository{
 
     @Override
     public List<Clientes> listarClientes() throws SQLException {
-        List<Clientes> listaClientes = new ArrayList<>();
-        Operaciones.setConnection(ConexionDB.MysConnection());
-        String sentencia = "SELECT * FROM clietes;";
-        try(PreparedStatement ps = Operaciones.getConnection().prepareStatement(sentencia);
-            ResultSet rs = Operaciones.consultar_BD(ps)){
-            while(rs != null && rs.next()){
-                int id = rs.getInt("id");
-                String nombre = rs.getString("nombre");
-                String documento = rs.getString("documento");
-                String correo = rs.getString("correo");
-                String telefono = rs.getString("telefono");
-                Clientes c = new Clientes(id, nombre, documento, correo, telefono);
-                listaClientes.add(c);
-            }
-        }finally{
-            Operaciones.cerrarConexion();
-            return listaClientes;
+    List<Clientes> listaClientes = new ArrayList<>();
+
+    Operaciones.setConnection(ConexionDB.MysConnection());
+
+    String sentencia = "SELECT * FROM clientes";
+
+    try (PreparedStatement ps =
+                 Operaciones.getConnection().prepareStatement(sentencia);
+         ResultSet rs = Operaciones.consultar_BD(ps)) {
+
+        while (rs != null && rs.next()) {
+
+            int id = rs.getInt("id");
+            String nombre = rs.getString("nombre");
+            String documento = rs.getString("documento");
+            String correo = rs.getString("correo");
+            String telefono = rs.getString("telefono");
+
+            Clientes cliente = new Clientes(
+                    id, nombre, documento, correo, telefono
+            );
+
+            listaClientes.add(cliente);
         }
+
+    } finally {
+        Operaciones.cerrarConexion();
+    }
+
+    return listaClientes;
     }
 
     @Override

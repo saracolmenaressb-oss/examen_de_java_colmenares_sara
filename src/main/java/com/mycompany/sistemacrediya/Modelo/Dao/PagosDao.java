@@ -24,15 +24,26 @@ public class PagosDao implements PagoRepository {
     //par registrar el pago
     @Override
     public boolean registrarPago(Pago pago) throws SQLException {
+        String sentencia = """
+            INSERT INTO pagos (prestamo_id, fecha_pago, monto)
+            VALUES (?, ?, ?)
+            """;
         Operaciones.setConnection(ConexionDB.MysConnection());
-        String sentencia = "INSERT INTO pagos (prestamo_id, facha_pago, monto) VALUES(?, ?, ?);";
-        PreparedStatement ps = Operaciones.getConnection().prepareStatement(sentencia);
-        ps.setInt(1, pago.getPrestamo().getIdprestamo());
-        ps.setDate(2, java.sql.Date.valueOf(pago.getFechapago()));
-        ps.setDouble(3, pago.getMonto());
-        int filas = ps.executeUpdate();
-        Operaciones.cerrarConexion();
-        return filas > 0;
+        PreparedStatement ps = null;
+        try {
+            ps = Operaciones.getConnection()
+                    .prepareStatement(sentencia);
+            ps.setInt(1, pago.getPrestamo().getIdprestamo());
+            ps.setDate(2, java.sql.Date.valueOf(pago.getFechapago()));
+            ps.setDouble(3, pago.getMonto());
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            Operaciones.cerrarConexion();
+        }
     }
     //historico de pagos
     @Override

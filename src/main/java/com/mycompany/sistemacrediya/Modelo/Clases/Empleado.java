@@ -19,7 +19,8 @@ public class Empleado extends Persona{
         this.salario = salario;
     }
     
-    
+    public Empleado() {
+    }
     //getters
     public String getRol() {
         return rol;

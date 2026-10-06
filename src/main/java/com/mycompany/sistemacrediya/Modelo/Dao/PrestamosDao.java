@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.sistemacrediya.Modelo.Dao;
-
 import com.mycompany.sistemacrediya.Conexion.ConexionDB;
 import com.mycompany.sistemacrediya.Conexion.Operaciones;
 import com.mycompany.sistemacrediya.Modelo.Clases.Clientes;
@@ -42,22 +41,6 @@ public class PrestamosDao implements PrestamoRepository {
         Operaciones.cerrarConexion();
         return filas > 0;
     }
-    /*
-    private int idprestamo;
-    private double monto;
-    private double tasaInteres;
-    private LocalDate fechaIinicio;
-    private LocalDate fechaVencimiento;
-    private double cuotaMensual;
-    private double montoTotal;
-    private double saldoPendiente;
-    private int numeroCuotas;
-    private double valorCuota;
-    //Referencias
-    private EstadoPrestamo estado;
-    private Clientes clientes;
-    private Empleado empleados;
-    */
     //para onsultar el prestamo a traves del id
     @Override
     public Prestamos consultarPorId(int id) throws SQLException {
@@ -93,10 +76,10 @@ public class PrestamosDao implements PrestamoRepository {
                 prestamo.setEmpleados(empleadoTemp);
             }
         }
-    } finally {
-        Operaciones.cerrarConexion();
-    }
-    return prestamo;
+        } finally {
+            Operaciones.cerrarConexion();
+        }
+        return prestamo;
     }
     //para listar los prestamos
     @Override

@@ -18,6 +18,7 @@ Proyecto: Sistema de Gestión y Cobros de Cartera "CrediYa"
 La empresa CrediYa S.A.S. operaba mediante un control manual y descentralizado basado en hojas de cálculo, lo que propiciaba inconsistencias en la información de préstamos, duplicidad de datos y una deficiente trazabilidad en el recaudo de cartera.
 
 Para solventar esta problemática, se desarrolló un sistema robusto de consola en Java que automatiza y centraliza la gestión de empleados, clientes, créditos y pagos. El software garantiza la persistencia dual (memoria, archivos planos y base de datos relacional MySQL) e implementa rigurosos estándares de diseño de software e ingeniería de datos.
+
 ---
 ## 3. Arquitectura del Sistema y Organización de Paquetes
 
@@ -38,6 +39,7 @@ El proyecto se diseñó bajo una Arquitectura en Capas Estricta, aplicando el pr
 * vista: Capa de presentación en consola. Proporciona menús interactivos amigables y estructurados para que el operador interactúe fluidamente con el sistema.
 
 * Paquete de Soporte / Archivos: Gestiona la persistencia secundaria en archivos planos para respaldos o registros locales.
+
 ---
 ## 4. Aplicación de la Programación Orientada a Objetos (POO) y Principios SOLID
 ---
@@ -50,6 +52,7 @@ Clase Base (Persona): Encapsula los atributos de identificación comunes (id, no
 Clases Derivadas (Empleado y Cliente): Heredan de Persona mediante la palabra reservada extends, especializándose al incorporar sus propios atributos (por ejemplo, rol y salario para empleados; telefono y relación con préstamos para clientes).
 
 Polimorfismo e Interfaces: Las interfaces ubicadas en modelo.persistencia establecen contratos formales que las clases de implementación deben cumplir obligatoriamente, permitiendo intercambiar implementaciones de persistencia sin alterar las capas superiores.
+
 ---
 ### 4.2. Principios SOLID
 
@@ -66,6 +69,7 @@ Filtrado en tiempo de ejecución de préstamos activos y vencidos.
 Identificación automatizada de clientes morosos bajo criterios de saldo pendiente y fechas de corte.
 
 Agrupación y mapeo de transacciones financieras para la generación de reportes gerenciales directos en la consola.
+
 ---
 ### 6. Persistencia de Datos (MySQL JDBC y Archivos)
 
@@ -74,6 +78,7 @@ El sistema garantiza la persistencia híbrida mediante dos mecanismos complement
 Base de Datos Relacional (MySQL): Conexión robusta mediante JDBC utilizando PreparedStatement para garantizar la parametrización de consultas y salvaguardar la integridad transaccional del sistema durante el registro de pagos, abonos y actualización de saldos pendientes en los préstamos.
 
 Archivos Planos: Mecanismo de respaldo secundario para auditorías rápidas y persistencia ligera de registros institucionales.
+
 ---
 
 ### 7. Instrucciones de Compilación y Ejecución
@@ -94,3 +99,8 @@ javac -d bin $(find src -name "*.java")
 **Ejecución:**
 
 java -cp bin controlador.Principal
+
+---
+## 8. Diagrama UML
+
+![alt text](img/diaramauml.png)

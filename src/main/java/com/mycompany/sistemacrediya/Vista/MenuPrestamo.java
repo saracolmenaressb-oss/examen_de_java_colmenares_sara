@@ -28,7 +28,6 @@ public class MenuPrestamo {
     }
 
     public void mostrarMenu() {
-
         int opcion;
 
         do {
@@ -56,35 +55,23 @@ public class MenuPrestamo {
                         break;
 
                     case 0:
-                        System.out.println(
-                                "Volviendo al menú principal..."
-                        );
+                        System.out.println("Volviendo al menú principal...");
                         break;
 
                     default:
-                        System.out.println(
-                                "Opción inválida. Intente nuevamente."
-                        );
+                        System.out.println("Opción inválida. Intente nuevamente.");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println(
-                        "Debe ingresar un número válido."
-                );
+                System.out.println("Debe ingresar un número válido.");
                 opcion = -1;
 
             } catch (SQLException e) {
-                System.out.println(
-                        "Error al consultar la base de datos: "
-                                + e.getMessage()
-                );
+                System.out.println("Error al consultar la base de datos: " + e.getMessage());
                 opcion = -1;
 
             } catch (IllegalArgumentException e) {
-                System.out.println(
-                        "No se pudo procesar la operación: "
-                                + e.getMessage()
-                );
+                System.out.println("No se pudo procesar la operación: " + e.getMessage());
                 opcion = -1;
             }
 
@@ -93,7 +80,6 @@ public class MenuPrestamo {
 
     // Registrar préstamo
     private void registrarPrestamo() throws SQLException {
-
         System.out.println("\n--- REGISTRAR PRÉSTAMO ---");
 
         Prestamos prestamo = new Prestamos();
@@ -102,7 +88,7 @@ public class MenuPrestamo {
         int idCliente = Integer.parseInt(scanner.nextLine());
 
         System.out.print("ID del empleado: ");
-        int idEmpleado = Integer.parseInt(scanner.nextLine());
+        int idEmpleado = Integer.parseInt(scanner.nextLine()); // Ya se lee aquí correctamente
 
         System.out.print("Monto del préstamo: ");
         double monto = Double.parseDouble(scanner.nextLine());
@@ -121,8 +107,9 @@ public class MenuPrestamo {
         Clientes cliente = new Clientes();
         cliente.setIdpersona(idCliente);
 
+        // AQUÍ ESTABA EL ERROR: Se eliminó la línea duplicada 'int idEmpleado = ...'
         Empleado empleado = new Empleado();
-        empleado.getIdpersona(idpersona);
+        empleado.setIdpersona(idEmpleado);
 
         prestamo.setClientes(cliente);
         prestamo.setEmpleados(empleado);
@@ -134,46 +121,26 @@ public class MenuPrestamo {
         boolean registrado = controller.registrarPrestamo(prestamo);
 
         if (registrado) {
-            System.out.println(
-                    "\nPréstamo registrado correctamente."
-            );
-            System.out.printf(
-                    "Monto total: %.2f%n",
-                    prestamo.getMontoTotal()
-            );
-            System.out.printf(
-                    "Valor de la cuota: %.2f%n",
-                    prestamo.getCuotaMensual()
-            );
-            System.out.printf(
-                    "Saldo pendiente: %.2f%n",
-                    prestamo.getSaldoPendiente()
-            );
-            System.out.println(
-                    "Fecha de vencimiento: "
-                            + prestamo.getFechaVencimiento()
-            );
+            System.out.println("\nPréstamo registrado correctamente.");
+            System.out.printf("Monto total: %.2f%n", prestamo.getMontoTotal());
+            System.out.printf("Valor de la cuota: %.2f%n", prestamo.getCuotaMensual());
+            System.out.printf("Saldo pendiente: %.2f%n", prestamo.getSaldoPendiente());
+            System.out.println("Fecha de vencimiento: " + prestamo.getFechaVencimiento());
         } else {
-            System.out.println(
-                    "No fue posible registrar el préstamo."
-            );
+            System.out.println("No fue posible registrar el préstamo.");
         }
     }
 
     // Consultar un préstamo
     private void consultarPrestamo() throws SQLException {
-
         System.out.println("\n--- CONSULTAR PRÉSTAMO ---");
         System.out.print("Ingrese el ID del préstamo: ");
 
         int id = Integer.parseInt(scanner.nextLine());
-
         Prestamos prestamo = controller.consultarPrestamo(id);
 
         if (prestamo == null) {
-            System.out.println(
-                    "No se encontró un préstamo con ese ID."
-            );
+            System.out.println("No se encontró un préstamo con ese ID.");
             return;
         }
 
@@ -182,15 +149,11 @@ public class MenuPrestamo {
 
     // Listar préstamos
     private void listarPrestamos() throws SQLException {
-
         System.out.println("\n--- LISTADO DE PRÉSTAMOS ---");
-
         List<Prestamos> prestamos = controller.listarPrestamos();
 
         if (prestamos == null || prestamos.isEmpty()) {
-            System.out.println(
-                    "No hay préstamos registrados."
-            );
+            System.out.println("No hay préstamos registrados.");
             return;
         }
 
@@ -202,43 +165,23 @@ public class MenuPrestamo {
 
     // Mostrar información de un préstamo
     private void mostrarDatosPrestamo(Prestamos prestamo) {
-
         System.out.println("\nID: " + prestamo.getIdprestamo());
-        System.out.printf("Monto prestado: %.2f%n",
-                prestamo.getMonto());
-        System.out.printf("Tasa de interés: %.2f%%%n",
-                prestamo.getTasaInteres());
-        System.out.printf("Monto total: %.2f%n",
-                prestamo.getMontoTotal());
-        System.out.printf("Cuota mensual: %.2f%n",
-                prestamo.getCuotaMensual());
-        System.out.printf("Saldo pendiente: %.2f%n",
-                prestamo.getSaldoPendiente());
-
-        System.out.println(
-                "Número de cuotas: " + prestamo.getNumeroCuotas()
-        );
-        System.out.println(
-                "Fecha de inicio: " + prestamo.getFechaIinicio()
-        );
-        System.out.println(
-                "Fecha de vencimiento: "
-                        + prestamo.getFechaVencimiento()
-        );
+        System.out.printf("Monto prestado: %.2f%n", prestamo.getMonto());
+        System.out.printf("Tasa de interés: %.2f%%%n", prestamo.getTasaInteres());
+        System.out.printf("Monto total: %.2f%n", prestamo.getMontoTotal());
+        System.out.printf("Cuota mensual: %.2f%n", prestamo.getCuotaMensual());
+        System.out.printf("Saldo pendiente: %.2f%n", prestamo.getSaldoPendiente());
+        System.out.println("Número de cuotas: " + prestamo.getNumeroCuotas());
+        System.out.println("Fecha de inicio: " + prestamo.getFechaIinicio());
+        System.out.println("Fecha de vencimiento: " + prestamo.getFechaVencimiento());
         System.out.println("Estado: " + prestamo.getEstado());
 
         if (prestamo.getClientes() != null) {
-            System.out.println(
-                    "ID del cliente: "
-                            + prestamo.getClientes().getIdpersona()
-            );
+            System.out.println("ID del cliente: " + prestamo.getClientes().getIdpersona());
         }
 
         if (prestamo.getEmpleados() != null) {
-            System.out.println(
-                    "ID del empleado: "
-                            + prestamo.getEmpleados().getIdpersona()
-            );
+            System.out.println("ID del empleado: " + prestamo.getEmpleados().getIdpersona());
         }
     }
 }

@@ -4,13 +4,15 @@
  */
 package com.mycompany.sistemacrediya.Modelo.Clases;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  *
  * @author USUARIO
  */
-public class Prestamos {
+public class Prestamos implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int idprestamo;
     private double monto;
     private double tasaInteres;

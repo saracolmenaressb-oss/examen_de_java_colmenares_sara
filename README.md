@@ -122,3 +122,7 @@ java -cp bin controlador.Principal
 ![alt text](img/Empleado.png)
 
 ![alt text](img/Empleado1.png)
+
+**Clientes**
+
+![alt text](img/clientes.png)

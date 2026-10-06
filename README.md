@@ -59,6 +59,7 @@ Polimorfismo e Interfaces: Las interfaces ubicadas en modelo.persistencia establ
 Principio de Responsabilidad Única (SRP): Cada paquete y clase cumple un rol específico; por ejemplo, la capa service maneja exclusivamente la lógica de validación y transformación de datos, separándose por completo de las operaciones de base de datos (modelo.dao) y de la interacción con el usuario (vista).
 
 Abstracción y Encapsulamiento: Los atributos de las entidades son privados (private) y se accede a ellos a través de métodos de acceso seguros (getters y setters), resguardando la integridad del estado interno de los objetos.
+
 ---
 ### 5. Procesamiento Avanzado de Datos (Stream API y Expresiones Lambda)
 
@@ -104,3 +105,20 @@ java -cp bin controlador.Principal
 ## 8. Diagrama UML
 
 ![alt text](img/diaramauml.png)
+
+---
+## 9. Capturas de evidencia
+
+**prestamos**
+
+![alt text](img/prestamos1.png)
+
+![alt text](img/prestamos2.png)
+
+![alt text](img/prestamos3.png)
+
+**Empleado**
+
+![alt text](img/Empleado.png)
+
+![alt text](img/Empleado1.png)

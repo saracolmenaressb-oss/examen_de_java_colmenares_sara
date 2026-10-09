@@ -21,7 +21,7 @@ public class Clientes extends Persona {
         super(nombre, documento, correo);
         this.telefono = telefono;
     }
-
+/*clientes*/
     public Clientes() {
     }
     

@@ -9,5 +9,15 @@ package com.mycompany.sistemacrediya.Controlador;
  * @author USUARIO
  */
 public class ReporteController {
-    
+    private final ReporteService reporteService;
+
+    public ReporteController() {
+        this.reporteService = new ReporteService();
+    }
+
+    public ResumenPrestamos generarReporte(
+            EstadoPrestamo estado) throws SQLException {
+
+        return reporteService.generarReporte(estado);
+    }
 }

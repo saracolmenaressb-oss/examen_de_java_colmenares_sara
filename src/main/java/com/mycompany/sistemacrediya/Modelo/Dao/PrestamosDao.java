@@ -110,4 +110,98 @@ public class PrestamosDao implements PrestamoRepository {
         }
         return listaPrestamos;
     }    
+    /*
+    @Override
+public Prestamos consultarPorId(int id) throws SQLException {
+
+    String sql = """
+        SELECT p.*,
+            COALESCE(
+                (SELECT SUM(pg.monto)
+                 FROM pagos pg
+                 WHERE pg.prestamo_id = p.id),
+                0
+            ) AS total_pagado
+        FROM prestamos p
+        WHERE p.id = ?
+        """;
+
+    try (java.sql.Connection conexion =
+                 ConexionDB.MysConnection();
+         PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+        ps.setInt(1, id);
+
+        try (ResultSet rs = ps.executeQuery()) {
+
+            if (!rs.next()) {
+                return null;
+            }
+
+            int idPrestamo = rs.getInt("id");
+            double monto = rs.getDouble("monto");
+            double interes = rs.getDouble("interes");
+            int cuotas = rs.getInt("cuotas");
+
+            LocalDate fechaInicio =
+                    rs.getDate("fecha_inicio").toLocalDate();
+
+            EstadoPrestamo estado =
+                    EstadoPrestamo.valueOf(rs.getString("estado"));
+
+            double totalPagado = rs.getDouble("total_pagado");
+
+            double montoTotal =
+                    monto + monto * (interes / 100.0);
+
+            montoTotal = Math.round(montoTotal * 100.0) / 100.0;
+
+            double saldoPendiente = Math.max(
+                    0.0,
+                    Math.round(
+                            (montoTotal - totalPagado) * 100.0
+                    ) / 100.0
+            );
+
+            Prestamos prestamo = new Prestamos();
+
+            prestamo.setIdprestamo(idPrestamo);
+            prestamo.setMonto(monto);
+            prestamo.setTasaInteres(interes);
+            prestamo.setNumeroCuotas(cuotas);
+            prestamo.setFechaIinicio(fechaInicio);
+
+            prestamo.setFechaVencimiento(
+                    fechaInicio.plusMonths(cuotas)
+            );
+
+            prestamo.setMontoTotal(montoTotal);
+            prestamo.setSaldoPendiente(saldoPendiente);
+
+            double cuota = cuotas > 0
+                    ? montoTotal / cuotas
+                    : 0.0;
+
+            prestamo.setCuotaMensual(cuota);
+            prestamo.setValorCuota(cuota);
+            prestamo.setEstado(estado);
+
+            Clientes cliente = new Clientes(
+                    rs.getInt("cliente_id"),
+                    "", "", "", ""
+            );
+
+            Empleado empleado = new Empleado(
+                    rs.getInt("empleado_id"),
+                    "", "", "", "", 0.0
+            );
+
+            prestamo.setClientes(cliente);
+            prestamo.setEmpleados(empleado);
+
+            return prestamo;
+        }
+    }
+}
+    */
 }

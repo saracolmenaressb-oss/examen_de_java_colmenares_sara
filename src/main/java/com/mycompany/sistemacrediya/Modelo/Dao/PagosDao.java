@@ -5,10 +5,14 @@
 package com.mycompany.sistemacrediya.Modelo.Dao;
 
 import com.mycompany.sistemacrediya.Conexion.ConexionDB;
+import static com.mycompany.sistemacrediya.Conexion.ConexionDB.con;
 import com.mycompany.sistemacrediya.Conexion.Operaciones;
 import com.mycompany.sistemacrediya.Modelo.Clases.Pago;
 import com.mycompany.sistemacrediya.Modelo.Clases.Prestamos;
 import com.mycompany.sistemacrediya.Modelo.Persistencia.PagoRepository;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +25,7 @@ import java.util.List;
  * @author USUARIO
  */
 public class PagosDao implements PagoRepository {
-    //par registrar el pago
+    //para registrar el pago
     @Override
     public boolean registrarPago(Pago pago) throws SQLException {
         String sentencia = """
@@ -64,11 +68,11 @@ public class PagosDao implements PagoRepository {
             // Creamos un objeto préstamo referencial con el ID
             Prestamos pRef = new Prestamos(idPrestamo, 0, 0, null, null, 0, 0, 0, null, null, null);
             
-            Pago pago = new Pago(idPago, monto, fechaPago, 0.0, null, pRef);
+            Pago pago = new Pago(idPago, monto, fechaPago,0.0, null, pRef);
             listaPagos.add(pago);
         }
         Operaciones.cerrarConexion();
-        return listaPagos; 
+        return listaPagos;
     }
     //Actualizar saldo
     @Override
@@ -84,6 +88,24 @@ public class PagosDao implements PagoRepository {
         int filas = ps.executeUpdate();
         Operaciones.cerrarConexion();
         return filas > 0;
+    }
+    //Persistencia en MySQL (JDBC)
+    private static Connection getConnection(
+        String url, String user, String password)
+        throws SQLException {
+
+    con = DriverManager.getConnection(url, user, password);
+
+    if (con != null) {
+        DatabaseMetaData meta = con.getMetaData();
+
+        System.out.println(
+                "Base de datos conectada: "
+                + meta.getDriverName()
+        );
+    }
+
+    return con;
     }
     
 }

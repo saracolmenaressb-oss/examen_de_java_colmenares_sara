@@ -11,14 +11,14 @@ import java.time.LocalDate;
  *
  * @author USUARIO
  */
-public class Pago implements Serializable{
-    private static final long serialVersionUID = 1L;
+public class Pago {
+    //Examen de java  clase pago
     private int idpago;
     private double monto;
     private LocalDate fechapago;
     private double saldoRestante;
     //Referencias
-    private MetodoPago metodoPago;
+       private MetodoPago metodoPago;
     private Prestamos prestamo;
 
     public Pago(int idpago, double monto, LocalDate fechapago, double saldoRestante, MetodoPago metodoPago, Prestamos prestamo) {
@@ -29,6 +29,7 @@ public class Pago implements Serializable{
         this.metodoPago = metodoPago;
         this.prestamo = prestamo;
     }
+    
     //getters
     public int getIdpago() {
         return idpago;
@@ -77,5 +78,13 @@ public class Pago implements Serializable{
     public void setPrestamo(Prestamos prestamo) {
         this.prestamo = prestamo;
     }
+    //toString
+
+    @Override
+    public String toString() {
+        return "Pago{" + "idpago=" + idpago + ", monto=" + monto + ", fechapago=" + fechapago + ", prestamo=" + prestamo + '}';
+    }
+
+    
     
 }
